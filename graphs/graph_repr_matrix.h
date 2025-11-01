@@ -1,9 +1,8 @@
 #include <iostream>
 #include <vector>
 
-
-//Time : O(m) , Space O(n*n)
-int main(){
+//Time : O(m) , Space:  O(n*n)
+auto get_graph_matrix(){
 
     int nodes, edges;
     
@@ -13,8 +12,7 @@ int main(){
     std::vector<std::vector<int>> adjmat (nodes+1, std::vector<int> (nodes+1, 0)); // +1 because index  start from 0
 
     int uend, vend;
-    for (auto i = 0; i < edges; ++i)
-    {
+    for (auto i = 0; i < edges; ++i){
         std::cout << " Enter  edge : ";
         std::cin >> uend >> vend;
         
@@ -23,5 +21,5 @@ int main(){
         adjmat[vend][uend] = 1;
     }
 
-    return 0;
+    return std::move(adjmat);
 }
