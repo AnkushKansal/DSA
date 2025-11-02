@@ -10,7 +10,7 @@
 
 // Undirected Graph/Tree
 // Space : O(nodes)
-// Time : O(nodes)+ O(nodes) + O(Total Degree) = O(nodes)+O(2Edges)
+// Time : O(nodes + 2*edges)  //(O(nodes) for visited map + (O(nodes)+ O(2Edges))
 int main()
 {
     auto graph = get_graph_list();

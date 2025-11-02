@@ -10,6 +10,7 @@ auto get_graph_list(){
     std::cout << "Enter number of nodes and edges in a graph" << "\n";    
     std::cin >> nodes >> edges;
 
+    //Used map as indices could be sparse for the graph. Not cache friendly
     std::unordered_map<u_short, std::vector<std::pair<u_short,short>>> adjlist(nodes+1);
 
     int uend, vend, edge_weight;
