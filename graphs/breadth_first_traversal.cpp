@@ -1,20 +1,35 @@
 // Level Wise traversal
 
+#include <cassert>
 #include <queue>
+#include <ranges>
+#include <algorithm>
+#include <unordered_map>
+
 #include "graph_repr_weighted_list.h"
 
 // Undirected Graph/Tree
 // Space : O(nodes)
-// Time : O(nodes)+O(Total Degree) = O(nodes)+O(2Edges)
+// Time : O(nodes)+ O(nodes) + O(Total Degree) = O(nodes)+O(2Edges)
 int main()
 {
     auto graph = get_graph_list();
 
-    std::vector<int> visited(graph.size(), 0);
+    std::unordered_map<u_short, short> visited;
+    for (auto &edges_vec : graph)
+    {
+        for (auto &edge : edges_vec.second)
+        {
+            visited[edge.first] = 0;
+        }
+    }
 
-    u_short root = 0;
+    u_short root = 1;
     std::cout << "Enter Root Node : ";
     std::cin >> root;
+    auto min_max_it = std::ranges::minmax_element(visited, std::less<>(), &decltype(visited)::value_type::first); // compare by key
+    assert(min_max_it.min != visited.end() && min_max_it.max != visited.end());
+    assert(root <= min_max_it.max->first && root >= min_max_it.min->first);
 
     std::queue<u_short, std::deque<u_short>> nodes_queue;
     nodes_queue.emplace(root);
@@ -25,12 +40,13 @@ int main()
 
         if (!visited[ele])
         {
-            for (auto &item : graph[ele])
-            { // loops twice for single edge
-                if (!visited[item.first])
-                    nodes_queue.emplace(item.first);
+            for (auto &edges : graph[ele])
+            {
+                // loops twice for single edge
+                if (!visited[edges.first])
+                    nodes_queue.emplace(edges.first);
             }
-            std::cout << "Visited " << ele << "\n";
+            std::cout << "Visited Node Index -> " << ele << "\n";
             visited[ele] = 1;
         }
         nodes_queue.pop();
