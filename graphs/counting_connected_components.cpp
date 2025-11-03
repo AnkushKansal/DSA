@@ -1,7 +1,6 @@
 #include <unordered_map>
 #include <ranges>
 #include <algorithm>
-#include <cassert>
 #include <stack>
 #include "graph_repr_weighted_list.h"
 
