@@ -7,9 +7,9 @@ constexpr int M = 6;
 
 using Grid = std::array<std::array<int, M>, N>;
 
-// Time : O(n^2)*8
-// Space : O(matrix size)/  O(n^2) for queue
-void traverse(const auto &start, const Grid &grid, Grid &visited)
+//Time : O(n^2)*8
+//Space : O(matrix size)/  O(n^2) for queue
+void traverse(const auto &start,  const Grid& grid, Grid &visited)
 {
 
     std::queue<std::pair<int, int>> cell_queue;
@@ -17,19 +17,19 @@ void traverse(const auto &start, const Grid &grid, Grid &visited)
 
     while (!cell_queue.empty())
     {
-        auto &[row, col] = cell_queue.front();
+        auto &[row,col] = cell_queue.front();
         cell_queue.pop();
 
         if (!visited[row][col])
         {
-            constexpr std::array<std::pair<int, int>, 8> dirs = {{{0, -1},  // left
-                                                                  {0, 1},   // right
-                                                                  {-1, 0},  // up
-                                                                  {1, 0},   // down
-                                                                  {-1, -1}, // left up
-                                                                  {-1, 1},  // right up
-                                                                  {1, -1},  // left down
-                                                                  {1, 1}}}; // right down
+            constexpr std::array<std::pair<int, int>, 8> dirs = {{{0, -1}, // left
+                                                       {0, 1},  // right
+                                                       {-1, 0}, // up
+                                                       {1, 0},  // down
+                                                       {-1, -1},    // left up
+                                                       {-1, 1}, // right up
+                                                       {1, -1}, // left down
+                                                       {1, 1}}}; // right down
             for (auto &dir : dirs)
             {
                 int new_x = row + dir.first;
@@ -47,9 +47,10 @@ void traverse(const auto &start, const Grid &grid, Grid &visited)
     }
 }
 
-// Time : O(n^2) for outer loop
-// Space : (n^2) for auxiliary matrix
-//  Total Time = O(n^2)
+
+//Time : O(n^2) for outer loop
+//Space : (n^2) for auxiliary matrix
+// Total Time = O(n^2)
 int main()
 {
 
@@ -71,7 +72,6 @@ int main()
             if (grid[row][col] == 1 && visited[row][col] != 1)
             {
                 auto start = std::make_pair(row, col);
-                std::cout << "start is : " << row << "," << col << "\n";
                 traverse(start, grid, visited);
                 ++islands;
             }
