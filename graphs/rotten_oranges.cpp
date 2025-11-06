@@ -15,11 +15,13 @@ auto rotting_oranges(const auto &start, Grid &grid, Grid &visited)
     static int rotting_time = 0;
     std::stack<std::pair<int, int>> cell_stack;
     cell_stack.emplace(start);
+    visited[start.first][start.second] = 1;
 
     while (!cell_stack.empty())
     {
         auto [row, col] = cell_stack.top();
         cell_stack.pop();
+        std::cout << "Visited : [" << row << "," << col << "]" << "\n";
 
         constexpr std::array<std::pair<int, int>, 4> dirs = {{{0, -1},  // left
                                                               {0, 1},   // right
@@ -27,21 +29,20 @@ auto rotting_oranges(const auto &start, Grid &grid, Grid &visited)
                                                               {1, 0}}}; // down
 
         bool rot_flag = false;
-        for (auto &dir : dirs)
+        for (const auto &[dx, dy] : dirs)
         {
-            int new_x = row + dir.first;
-            int new_y = col + dir.second;
+            int new_x = row + dx;
+            int new_y = col + dy;
             if (new_x >= 0 && new_x < N && new_y >= 0 && new_y < M &&
                 grid[new_x][new_y] != 0 && !visited[new_x][new_y])
             {
                 cell_stack.emplace(std::make_pair(new_x, new_y));
                 grid[new_x][new_y] = 2;
+                visited[new_x][new_y] = 1;
                 if (!rot_flag)
                     rot_flag = true;
             }
         }
-        std::cout << "Visited : [" << row << "," << col << "]" << "\n";
-        visited[row][col] = 1;
         if (rot_flag)
         {
             ++rotting_time;

@@ -33,22 +33,23 @@ int main()
 
     std::stack<u_short, std::deque<u_short>> nodes_stack;
     nodes_stack.emplace(root);
+    std::cout << "Visited Node Index -> " << root << "\n";
+    visited[root] = 1;
 
     while (!nodes_stack.empty())
     {
         u_short ele = nodes_stack.top();
         nodes_stack.pop();
 
-        if (!visited[ele])
+        for (auto &edges : graph[ele])
         {
-            for (auto &edges : graph[ele])
+            // loops twice for single edge
+            if (!visited[edges.first])
             {
-                // loops twice for single edge
-                if (!visited[edges.first])
-                    nodes_stack.emplace(edges.first);
+                nodes_stack.emplace(edges.first);
+                std::cout << "Visited Node Index -> " << edges.first << "\n";
+                visited[edges.first] = 1;
             }
-            std::cout << "Visited Node Index -> " << ele << "\n";
-            visited[ele] = 1;
         }
     }
 }

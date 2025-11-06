@@ -66,9 +66,9 @@ int main()
 
     std::unordered_map<u_short, short> visited;
 
-    for (auto &edges_vec : graph)
+    for (auto &[node, edges] : graph)
     {
-        for (auto &edge : edges_vec.second)
+        for (auto &edge : edges)
         {
             if (visited.find(edge) == visited.end())
                 visited[edge] = 0;
@@ -77,12 +77,12 @@ int main()
 
     static int components = 0;
 
-    for (const auto &entry : visited)
+    for (const auto &[node, is_visited]: visited)
     {
-        if (!visited[entry.first])
+        if (!is_visited)
         {
             ++components;
-            if (find_cycle_bfs(entry.first, graph, visited))
+            if (find_cycle_bfs(node, graph, visited))
             {
                 std::cout << " Cycle detected in component " << components << "\n";
                 break;

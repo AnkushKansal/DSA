@@ -10,7 +10,7 @@ using Grid = std::array<std::array<int, M>, N>;
 
 // Time : O(n^2)*4
 // Space : O(matrix size) or O(n^2) for stack
-void fill_image_grid(const auto &start, Grid &grid, Grid &visited, const auto &new_pixel)
+void fill_image_grid(const auto &start, Grid &grid, const auto &new_pixel)
 {
     const int old_pixel = grid[start.first][start.second];
     if (old_pixel == new_pixel)
@@ -18,6 +18,7 @@ void fill_image_grid(const auto &start, Grid &grid, Grid &visited, const auto &n
 
     std::stack<std::pair<int, int>> cell_stack;
     cell_stack.emplace(start);
+    grid[start.first][start.second] = new_pixel;
 
     constexpr std::array<std::pair<int, int>, 4> dirs = {{{0, -1},  // left
                                                           {0, 1},   // right
@@ -28,28 +29,24 @@ void fill_image_grid(const auto &start, Grid &grid, Grid &visited, const auto &n
     {
         auto [row, col] = cell_stack.top();
         cell_stack.pop();
+        std::cout << "Visited : [" << row << "," << col << "]" << "\n";
 
-        if (!visited[row][col])
+        for (const auto &[dx, dy] : dirs)
         {
-            for (auto &dir : dirs)
+            int new_x = row + dx;
+            int new_y = col + dy;
+            if (new_x >= 0 && new_x < N && new_y >= 0 && new_y < M &&
+                grid[new_x][new_y] == old_pixel)
             {
-                int new_x = row + dir.first;
-                int new_y = col + dir.second;
-                if (new_x >= 0 && new_x < N && new_y >= 0 && new_y < M &&
-                    grid[new_x][new_y] == grid[row][col] && !visited[new_x][new_y])
-                {
-                    cell_stack.emplace(new_x, new_y);
-                }
+                cell_stack.emplace(new_x, new_y);
+                grid[new_x][new_y] = new_pixel;
             }
-            std::cout << "Visited : [" << row << "," << col << "]" << "\n";
-            grid[row][col] = new_pixel;
-            visited[row][col] = 1;
         }
     }
 }
 
-// Space : (n^2) for auxiliary matrix
-// Time = O(n^2)
+// Space : O(1)
+// Time = O(n^2) for stack
 int main()
 {
 
@@ -59,9 +56,7 @@ int main()
         std::array{0, 2, 2, 2, 0, 0},
         std::array{0, 2, 2, 1, 0, 0},
         std::array{0, 0, 0, 1, 0, 0},
-        std::array{0, 3, 2, 0, 0, 1}};
-
-    Grid visited = {};
+        std::array{0, 2, 2, 0, 0, 1}};
 
     int new_pixel = 0;
     std::cout << "Enter new pixel : ";
@@ -74,7 +69,7 @@ int main()
     assert(start_col < M && start_col >= 0);
 
     auto start = std::make_pair(start_row, start_col);
-    fill_image_grid(start, grid, visited, new_pixel);
+    fill_image_grid(start, grid, new_pixel);
 
     std::cout << "\nUpdated grid:\n";
     for (const auto &row : grid)

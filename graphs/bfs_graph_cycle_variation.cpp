@@ -74,18 +74,19 @@ int main()
     }
 
     static int components = 0;
-    for (const auto &entry : visited)
+    for (const auto &[node, is_visited]: visited)
     {
-        if (visited[entry.first] == 0)
+        if (!is_visited)
         {
             ++components;
-            if (find_cycle_bfs(entry.first, graph, visited))
+            if (find_cycle_bfs(node, graph, visited))
             {
                 std::cout << " Cycle detected in component " << components << "\n";
                 break;
             }
             else
                 std::cout << " No Cycle detected in component " << components << "\n";
+
         }
     }
     return 0;
