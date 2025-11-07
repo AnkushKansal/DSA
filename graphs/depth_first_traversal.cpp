@@ -1,4 +1,4 @@
-// Level Wise traversal
+// depth Wise traversal
 
 #include <cassert>
 #include <stack>
@@ -33,22 +33,21 @@ int main()
 
     std::stack<u_short, std::deque<u_short>> nodes_stack;
     nodes_stack.emplace(root);
-    std::cout << "Visited Node Index -> " << root << "\n";
     visited[root] = 1;
 
     while (!nodes_stack.empty())
     {
-        u_short ele = nodes_stack.top();
+        u_short node = nodes_stack.top();
         nodes_stack.pop();
+        std::cout << "Visited Node Index -> " << node << "\n";
 
-        for (auto &edges : graph[ele])
+        for (auto &nbr : graph[node])
         {
             // loops twice for single edge
-            if (!visited[edges.first])
-            {
-                nodes_stack.emplace(edges.first);
-                std::cout << "Visited Node Index -> " << edges.first << "\n";
-                visited[edges.first] = 1;
+            if (!visited[nbr.first])
+            {                
+                nodes_stack.emplace(nbr.first);
+                visited[nbr.first] = 1;
             }
         }
     }

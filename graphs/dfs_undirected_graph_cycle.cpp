@@ -1,5 +1,6 @@
 #include <unordered_map>
-#include <queue>
+#include <stack>
+#include <vector>
 #include <iostream>
 
 auto get_graph_list()
@@ -24,29 +25,29 @@ auto get_graph_list()
     return adjlist;
 }
 
-// Cycle in  undirected graph
-bool find_cycle_bfs(const auto &root, const auto &graph, auto &visited)
+// Cycle in  undirected graph using depth traversal
+bool find_cycle_dfs(const auto &root, const auto &graph, auto &visited)
 {
-    std::queue<std::pair<u_short, u_short>, std::deque<std::pair<u_short, u_short>>> nodes_queue;
+    std::stack<std::pair<u_short, u_short>, std::deque<std::pair<u_short, u_short>>> nodes_stack;
+    nodes_stack.emplace(root, -1);
+    visited[root] = 1;
 
-    nodes_queue.emplace(root, -1);
     bool is_cycle = false;
-    visited[node] += 1;
 
-    while (!nodes_queue.empty() && !is_cycle)
+    while (!nodes_stack.empty() && !is_cycle)
     {
-        auto [node, parent] = nodes_queue.front();
-        nodes_queue.pop();
+        auto [node, parent] = nodes_stack.top();
+        nodes_stack.pop();
         std::cout << "Visited Node Index -> " << node << "\n";
 
-        for (const auto &edge : graph.at(node))
+        for (const auto &nbr : graph.at(node))
         {
-            if (!visited[edge])
+            if (!visited[nbr])
             {
-                nodes_queue.emplace(edge, node);
-                visited[edge] += 1;
+                nodes_stack.emplace(nbr, node);
+                visited[nbr] = 1;
             }
-            else if (edge != parent)
+            else if (nbr != parent)
                 is_cycle = true;
         }
     }
@@ -62,10 +63,9 @@ int main()
     auto graph = get_graph_list();
 
     std::unordered_map<u_short, short> visited;
-
-    for (auto &edges_vec : graph)
+    for (auto &[nodes, edges] : graph)
     {
-        for (auto &edge : edges_vec.second)
+        for (auto &edge : edges)
         {
             if (visited.find(edge) == visited.end())
                 visited[edge] = 0;
@@ -78,7 +78,7 @@ int main()
         if (!is_visited)
         {
             ++components;
-            if (find_cycle_bfs(node, graph, visited))
+            if (find_cycle_dfs(node, graph, visited))
             {
                 std::cout << " Cycle detected in component " << components << "\n";
                 break;
