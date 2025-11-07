@@ -31,20 +31,19 @@ bool find_cycle_bfs(const auto &root, const auto &graph, auto &visited)
 
     nodes_queue.emplace(root, -1);
     bool is_cycle = false;
+    visited[node] += 1;
 
     while (!nodes_queue.empty() && !is_cycle)
     {
         auto &[node, parent] = nodes_queue.front();
         nodes_queue.pop();
         std::cout << "Visited Node Index -> " << node << "\n";
-        visited[node] += 1;
 
         for (const auto &edge : graph.at(node))
         {
             if (!visited[edge])
             {
                 nodes_queue.emplace(edge, node);
-                std::cout << "Visited edge Index -> " << edge << "\n";
                 visited[edge] += 1;
             }
             else if (edge != parent)
@@ -74,7 +73,7 @@ int main()
     }
 
     static int components = 0;
-    for (const auto &[node, is_visited]: visited)
+    for (const auto &[node, is_visited] : visited)
     {
         if (!is_visited)
         {
@@ -86,7 +85,6 @@ int main()
             }
             else
                 std::cout << " No Cycle detected in component " << components << "\n";
-
         }
     }
     return 0;
