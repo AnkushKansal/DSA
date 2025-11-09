@@ -34,7 +34,7 @@ auto rotting_oranges(const auto &start, Grid &grid, Grid &visited)
             int new_x = row + dx;
             int new_y = col + dy;
             if (new_x >= 0 && new_x < N && new_y >= 0 && new_y < M &&
-                grid[new_x][new_y] != 0 && !visited[new_x][new_y])
+                grid[new_x][new_y] == 1 && !visited[new_x][new_y])
             {
                 cell_stack.emplace(std::make_pair(new_x, new_y));
                 grid[new_x][new_y] = 2;
