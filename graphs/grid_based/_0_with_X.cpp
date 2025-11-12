@@ -114,11 +114,8 @@ int main()
     auto cols = grid.at(0).size();
     auto boundary = std::make_pair(rows, cols);
 
-    std::thread worker1(row_border_bfs, std::cref(grid), std::ref(visited), std::cref(boundary));
-    std::thread worker2(column_border_bfs, std::cref(grid), std::ref(visited), std::cref(boundary));
-
-    worker1.join();
-    worker2.join();
+    std::jthread worker1(row_border_bfs, std::cref(grid), std::ref(visited), std::cref(boundary));
+    std::jthread worker2(column_border_bfs, std::cref(grid), std::ref(visited), std::cref(boundary));
 
     for (size_t row = 0; row < rows; ++row)
     {
