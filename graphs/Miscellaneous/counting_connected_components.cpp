@@ -1,7 +1,7 @@
 #include <unordered_map>
 #include <stack>
 
-#include "../graph_representation/graph_repr_weighted_list.h"
+#include "../Graph_representation/graph_repr_weighted_list.h"
 
 void depth_first_traversal(const auto &root, const auto &graph, auto &visited)
 {

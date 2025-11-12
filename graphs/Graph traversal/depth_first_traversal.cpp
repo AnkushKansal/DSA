@@ -6,7 +6,7 @@
 #include <algorithm>
 #include <unordered_map>
 
-#include "../graph_representation/graph_repr_weighted_list.h"
+#include "../Graph_representation/graph_repr_weighted_list.h"
 
 // Undirected Graph/Tree
 // Space : O(nodes)
