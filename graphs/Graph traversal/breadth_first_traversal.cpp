@@ -9,47 +9,49 @@
 #include "../Graph_representation/graph_repr_weighted_list.h"
 
 // Undirected Graph/Tree
-// Space : O(nodes)
+// Space : O(nodes) for visited map
 // Time : O(nodes + 2*edges)  //(O(nodes) for visited map + (O(nodes)+ O(2Edges))
 int main()
 {
-    auto graph = get_graph_list();
+    const auto graph = get_graph_list();
 
+    // Assumption : Graph is sparse. Use vector if dense
     std::unordered_map<u_short, short> visited;
-    for (auto &edges_vec : graph)
+    for (const auto &[node, edges] : graph)
     {
-        for (auto &edge : edges_vec.second)
+        for (const auto &[edge, weight] : edges)
         {
-            visited[edge.first] = 0;
+            visited[edge] = 0;
         }
     }
 
     u_short root = 1;
     std::cout << "Enter Root Node : ";
     std::cin >> root;
-    auto min_max_it = std::ranges::minmax_element(visited, std::less<>(), &decltype(visited)::value_type::first); // compare by key
-    assert(min_max_it.min != visited.end() && min_max_it.max != visited.end());
-    assert(root <= min_max_it.max->first && root >= min_max_it.min->first);
+    auto [min, max] = std::ranges::minmax_element(visited, std::less<>(), &decltype(visited)::value_type::first); // compare by key
+    assert(min != visited.end() && max != visited.end());
+    assert(root <= max->first && root >= min->first);
 
     std::queue<u_short, std::deque<u_short>> nodes_queue;
     nodes_queue.emplace(root);
     visited[root] = 1;
-    std::cout << "Visited Node Index -> " << root << "\n";
 
     while (!nodes_queue.empty())
     {
         u_short ele = nodes_queue.front();
         nodes_queue.pop();
+        std::cout << "Visited Node Index -> " << ele << "\n";
 
-        for (auto &edges : graph.at(ele))
+        for (const auto &[edge, weight] : graph.at(ele))
         {
             // loops twice for single edge
-            if (!visited[edges.first])
+            if (!visited[edge])
             {
-                nodes_queue.emplace(edges.first);
-                visited[edges.first] = 1;
-                std::cout << "Visited Node Index -> " << edges.first << "\n";
+                nodes_queue.emplace(edge);
+                visited[edge] = 1;
             }
         }
     }
+
+    return 0;
 }

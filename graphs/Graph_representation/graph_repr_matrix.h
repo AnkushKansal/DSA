@@ -2,7 +2,7 @@
 #include <vector>
 #include <cassert>
 
-// Time : O(m) , Space:  O(n*n)
+// Time : O(edges) , Space:  O(nodes*nodes)
 auto get_graph_matrix()
 {
     int nodes, edges;

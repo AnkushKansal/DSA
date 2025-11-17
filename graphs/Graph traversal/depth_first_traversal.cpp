@@ -9,27 +9,28 @@
 #include "../Graph_representation/graph_repr_weighted_list.h"
 
 // Undirected Graph/Tree
-// Space : O(nodes)
+// Space : O(nodes) for stack
 // Time : O(nodes + 2*edges)  //(O(nodes) for visited map + (O(nodes)+ O(2Edges))
 int main()
 {
-    auto graph = get_graph_list();
+    const auto& graph = get_graph_list();
 
+    // Assumption : Graph is sparse. Use vector if dense
     std::unordered_map<u_short, short> visited;
-    for (auto &edges_vec : graph)
+    for (const auto &[node, edges] : graph)
     {
-        for (auto &edge : edges_vec.second)
+        for (const auto &[edge, weight] : edges)
         {
-            visited[edge.first] = 0;
+            visited[edge] = 0;
         }
     }
 
     u_short root = 1;
     std::cout << "Enter Root Node : ";
     std::cin >> root;
-    auto min_max_it = std::ranges::minmax_element(visited, std::less<>(), &decltype(visited)::value_type::first); // compare by key
-    assert(min_max_it.min != visited.end() && min_max_it.max != visited.end());
-    assert(root <= min_max_it.max->first && root >= min_max_it.min->first);
+    auto [min, max] = std::ranges::minmax_element(visited, std::less<>(), &decltype(visited)::value_type::first); // compare by key
+    assert(min != visited.end() && max != visited.end());
+    assert(root <= max->first && root >= min->first);
 
     std::stack<u_short, std::deque<u_short>> nodes_stack;
     nodes_stack.emplace(root);
@@ -41,14 +42,16 @@ int main()
         nodes_stack.pop();
         std::cout << "Visited Node Index -> " << node << "\n";
 
-        for (auto &nbr : graph[node])
+        for (const auto &[nbr, weight] : graph.at(node))
         {
             // loops twice for single edge
-            if (!visited[nbr.first])
+            if (!visited[nbr])
             {                
-                nodes_stack.emplace(nbr.first);
-                visited[nbr.first] = 1;
+                nodes_stack.emplace(nbr);
+                visited[nbr] = 1;
             }
         }
     }
+
+    return 0;
 }
