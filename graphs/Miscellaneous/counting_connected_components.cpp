@@ -3,27 +3,17 @@
 
 #include "../Graph_representation/graph_repr_weighted_list.h"
 
-void depth_first_traversal(const auto &root, const auto &graph, auto &visited)
+void depth_first_traversal(auto &root, auto &graph, auto &visited)
 {
-    std::stack<u_short, std::deque<u_short>> nodes_stack;
-    nodes_stack.emplace(root);
     std::cout << "Visited Node Index -> " << root << "\n";
     visited[root] = 1;
 
-    while (!nodes_stack.empty())
+    for (const auto &[edge, weight] : graph.at(root))
     {
-        u_short ele = nodes_stack.top();
-        nodes_stack.pop();
-
-        for (auto &edges : graph.at(ele))
+        // loops twice for single edge
+        if (!visited[edge])
         {
-            // loops twice for single edge
-            if (!visited[edges.first])
-            {
-                nodes_stack.emplace(edges.first);
-                std::cout << "Visited Node Index -> " << edges.first << "\n";
-                visited[edges.first] = 1;
-            }
+            depth_first_traversal(edge, graph, visited);
         }
     }
 }
@@ -34,7 +24,7 @@ void depth_first_traversal(const auto &root, const auto &graph, auto &visited)
 // O(nodes)for visited map + O(nodes) for outer loop + (O(nodes)+ O(2Edges) for DFS
 int main()
 {
-    auto graph = get_graph_list(); // sparse graph
+    const auto graph = get_graph_list(); // sparse graph
 
     std::unordered_map<u_short, short> visited;
     for (auto &[parent, edges] : graph)
