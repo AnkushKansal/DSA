@@ -4,19 +4,21 @@ This directory contains implementations of graph representations and algorithms 
 
 ### Files:
 
-- **graph_repr_matrix.cpp**: Implementation of graph representation using adjacency matrix.
+- **Graph_representation/graph_repr_matrix.cpp**: Implementation of graph representation using adjacency matrix.
 
-- **graph_repr_weighted_list.cpp**: Implementation of graph representation using weighted adjacency list.
+- **Graph_representation/graph_repr_weighted_list.cpp**: Implementation of graph representation using weighted adjacency list.
 
-- **depth_first_traversal.cpp**: Implementation of depth first traversal using adjacency list.
+- **Graph traversal/depth_first_traversal.cpp**: Implementation of depth first traversal using adjacency list.
 
-- **breadth_first_traversal.cpp**: Implementation of breadth first traversal using adjacency list.
+- **Graph traversal/breadth_first_traversal.cpp**: Implementation of breadth first traversal using adjacency list.
 
-- **counting_connected_components.cpp**: Implementation for counting connected components using adjacency list.
+- **Miscellaneous/counting_connected_components.cpp**: Implementation for counting connected components using adjacency list.
 
-- **count_islands.cpp**: Implementation for counting islands using adjacency matrix.
+- **Grid_based/count_islands.cpp**: Implementation for counting islands using adjacency matrix.
 
-- **rotten_oranges.cpp**: Implementation for adjacent rotten oranges using adjacency matrix.
+- **Grid_based/rotten_oranges.cpp**: Implementation for adjacent rotten oranges using adjacency matrix.
+
+- **Grid_based/nearest_1_cell.cpp**: Implementation for nearest 1 cell on grid.
 
 ### How to Use:
 
